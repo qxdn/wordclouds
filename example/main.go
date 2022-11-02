@@ -137,7 +137,7 @@ func main() {
 	if conf.Debug {
 		oarr = append(oarr, wordclouds.Debug())
 	}
-	w := wordclouds.NewWordcloud(inputWords,
+	w, _ := wordclouds.NewWordcloud(inputWords,
 		oarr...,
 	)
 

@@ -1,6 +1,7 @@
 package wordclouds
 
 import (
+	"fmt"
 	"image"
 	"math"
 	"math/rand"
@@ -36,7 +37,10 @@ type Wordcloud struct {
 }
 
 // Initialize a wordcloud based on a map of word frequency.
-func NewWordcloud(wordList map[string]int, options ...Option) *Wordcloud {
+func NewWordcloud(wordList map[string]int, options ...Option) (*Wordcloud, error) {
+	if len(wordList) == 0 {
+		return nil, fmt.Errorf("wordcloud: map len is zero")
+	}
 	opts := defaultOptions
 	for _, opt := range options {
 		opt(&opts)
@@ -54,11 +58,17 @@ func NewWordcloud(wordList map[string]int, options ...Option) *Wordcloud {
 	sort.Slice(sortedWordList, func(i, j int) bool {
 		return sortedWordList[i].count > sortedWordList[j].count
 	})
+	if sortedWordList[0].count == 0 {
+		return nil, fmt.Errorf("wordcloud: max count is zero")
+	}
 
 	wordCountMax := float64(sortedWordList[0].count)
 
 	for idx := range sortedWordList {
 		word := &sortedWordList[idx]
+		if word.count == 0 {
+			continue
+		}
 		word.size =
 			opts.SizeFunction(float64(word.count)/wordCountMax) *
 				float64(opts.FontMaxSize)
@@ -105,7 +115,7 @@ func NewWordcloud(wordList map[string]int, options ...Option) *Wordcloud {
 		circles:         circles,
 		fonts:           make(map[float64]font.Face),
 		radii:           radii,
-	}
+	}, nil
 }
 
 func (w *Wordcloud) getPreciseBoundingBoxes(b *Box) []*Box {
