@@ -28,7 +28,7 @@ func TestWordcloud_Draw(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
-	inputWords := make(map[string]int, 0)
+	inputWords := make(map[string]uint64, 0)
 	err = yaml.Unmarshal(content, &inputWords)
 	assert.NoError(t, err)
 

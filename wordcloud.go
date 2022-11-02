@@ -16,13 +16,13 @@ import (
 
 type wordCount struct {
 	word  string
-	count int
+	count uint64
 	size  float64
 }
 
 // Wordcloud object. Create one with NewWordcloud and use Draw() to get the image
 type Wordcloud struct {
-	wordList        map[string]int
+	wordList        map[string]uint64
 	sortedWordList  []wordCount
 	grid            *spatialHashMap
 	dc              *gg.Context
@@ -36,7 +36,7 @@ type Wordcloud struct {
 }
 
 // Initialize a wordcloud based on a map of word frequency.
-func NewWordcloud(wordList map[string]int, options ...Option) *Wordcloud {
+func NewWordcloud(wordList map[string]uint64, options ...Option) *Wordcloud {
 	opts := defaultOptions
 	for _, opt := range options {
 		opt(&opts)

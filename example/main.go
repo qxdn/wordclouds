@@ -83,7 +83,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	inputWords := make(map[string]int, 0)
+	inputWords := make(map[string]uint64, 0)
 	err = yaml.Unmarshal(content, &inputWords)
 	if err != nil {
 		panic(err)
